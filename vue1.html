@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    .deactive {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+  <div id="root">
+    {{ message }}
+    <p>
+      {{ message2 }}
+    </p>
+  </div>
+
+  <div id="root2">
+    <span v-bind:title="message">Move here</span>
+  </div>
+
+  <div id="root3">
+    <span v-if="see">Show</span>
+  </div>
+
+  <div id="root4">
+    <ol>
+      <li v-for="item in todos">
+        {{ item.text }}
+      </li>
+    </ol>
+  </div>
+
+  <div id="root5">
+    <p>{{ message }}</p>
+    <button v-on:mouseover="hoverText" v-on:mouseleave="leaveMouse" v-on:click="changeText">click</button>
+  </div>
+
+  <div id="root6">
+    <p>{{ message }}</p>
+    <input type="text" v-model="message" value="{{ message }}" id="">
+  </div>
+
+  <div id="root7">
+    <ul>
+      <item
+        v-for="item in listItem"
+        v-bind:todo="item"
+        v-bind:key="item.id"
+      >
+      </item>
+    </ul>
+  </div>
+
+  <div id="root8">
+    <p>Giá trị của isButtonDisabled: {{ isButtonDisabled }}</p>
+    <button v-on:click="changeStatus">Kích hoạt</button>
+    <button v-bind:disabled="isButtonDisabled" v-bind:class="{ deactive: isButtonDisabled }">Active</button>
+  </div>
+
+  <div id="root9">
+    <p>Current message: {{ message }}</p>
+    <p>Computed: {{ anotherMessage }}</p>
+  </div>
+
+  <div id="root10">
+    <p v-show="ok">ok {{ ok }}</p>
+    <!-- <p v-else>ok {{ ok }}</p> -->
+  </div>
+
+  <ul id="root11">
+    <li v-for="item of list" v-bind:key="item.id">
+      {{ item.title }}
+    </li>
+  </ul>
+  <script src="./vue.js"></script>
+  <script>
+    const app = new Vue({
+      el: "#root",
+      data: {
+        message: "hello world",
+        message2: "message 2"
+      }
+    })
+
+    const root2 = new Vue({
+      el: "#root2",
+      data: {
+        message: `move here`
+      }
+    })
+
+    const root3 = new Vue({
+      el: "#root3",
+      data: {
+        see: true
+      }
+    })
+
+    const root4 = new Vue({
+      el: "#root4",
+      data: {
+        todos: [
+          {text: "todo 1"},
+          {text: "todo 2"},
+          {text: "todo 3"}
+        ]
+      }
+    })
+
+    const root5 = new Vue({
+      el: "#root5",
+      data: {
+        message: "vue event"
+      },
+      methods: {
+        changeText: function() {
+          this.message = "event vue"
+        },
+        hoverText: function() {
+          this.message = "hover"
+        },
+        leaveMouse: function() {
+          this.message = "leave"
+        }
+      }
+    })
+
+    const root6 = new Vue({
+      el: "#root6",
+      data: {
+        message: `Edit this form`
+      }
+    })
+
+    Vue.component("item", {
+      props: ["todo"],
+      template: `<li>{{ todo.text }}</li>`
+    })
+
+    const root7 = new Vue({
+      el: "#root7",
+      data: {
+        listItem: [
+          { text: "item 1" },
+          { text: "item 2" },
+          { text: "item 3" },
+          { text: "item 4" }
+        ]
+      }
+    })
+
+    const root8 = new Vue({
+      el: "#root8",
+      data: {
+        isButtonDisabled: true
+      },
+      methods: {
+        changeStatus: function() {
+          this.isButtonDisabled = !this.isButtonDisabled
+        }
+      }
+    })
+
+    const root9 = new Vue({
+      el: "#root9",
+      data: {
+        message: "Hello world"
+      },
+      computed: {
+        anotherMessage: function() {
+          return `World h`
+        }
+      }
+    })
+
+    const root10 = new Vue({
+      el: "#root10",
+      data: {
+        ok: false
+      }
+    })
+
+    const root11 = new Vue({
+      el: "#root11",
+      data: {
+        list: [
+          { title: "item 1" },
+          { title: "item 2" },
+          { title: "item 3" },
+          { title: "item 4" }
+        ]
+      }
+    })
+
+  </script>
+</body>
+</html>
