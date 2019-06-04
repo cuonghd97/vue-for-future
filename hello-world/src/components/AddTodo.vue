@@ -19,7 +19,7 @@ export default {
   methods: {
     addTodoItem: function() {
       let tmp = this.todoItem;
-      tmp.push({ title: this.value })
+      tmp.push({ title: this.value, isCompleted: false })
       this.$emit("update:todoItem", tmp)
       this.value=""
     }

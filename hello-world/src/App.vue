@@ -1,8 +1,20 @@
 <template>
   <div id="app">
     <AddTodo v-bind:todoItem.sync="todoItem"></AddTodo>
-    <ListItem v-bind:todoItem.sync="todoItem"></ListItem>
-    <span>{{ countLeftItem }} item left</span>
+    <ListItem
+      v-bind:todoItem.sync="todoItem"
+      v-bind:filterTodo.sync="filterTodo"
+    ></ListItem>
+    <div>
+      <span>{{ countLeftItem }} item left</span>
+      <button v-on:click="changeTypeFilterToAll">All</button>
+      <button v-on:click="changeTypeFilterToActive">Active</button>
+      <button v-on:click="changeTypeFilterToCompleted">Completed</button>
+      <button
+        v-show="hasCompleted"
+        v-on:click="clearCompleted"
+      >Clear completed</button>
+    </div>
   </div>
 </template>
 
@@ -20,7 +32,24 @@ export default {
     return {
       addText: "",
       todoItem: [],
-      leftItem: 0
+      typeFilter: "all"
+    }
+  },
+  methods: {
+    changeTypeFilterToAll: function() {
+      this.typeFilter = "all"
+    },
+    changeTypeFilterToActive: function() {
+      this.typeFilter = "active"
+    },
+    changeTypeFilterToCompleted: function() {
+      this.typeFilter = "completed"
+    },
+    clearCompleted: function() {
+      let tmp = this.todoItem.filter(item => (
+        !item.isCompleted
+      ))
+      this.todoItem = tmp
     }
   },
   watch: {
@@ -29,11 +58,46 @@ export default {
     },
     todoItem: function(newTodoItem) {
       console.log(newTodoItem)
+    },
+    typeFilter: function(val) {
+      console.log(val)
     }
   },
   computed: {
     countLeftItem: function() {
-      return this.todoItem.length
+      const listTodo = this.todoItem
+      let count = 0
+      for (let todo of listTodo) {
+        if (!todo.isCompleted) {
+          count += 1
+        }
+      }
+      return count
+    },
+    hasCompleted: function() {
+      const listTodo = this.todoItem
+      let count = 0
+      for (let todo of listTodo) {
+        if (todo.isCompleted) {
+          count += 1
+        }
+      }
+      return count > 0 ? true : false
+    },
+    filterTodo: function() {
+      if (this.typeFilter === "all") {
+        return this.todoItem
+      }
+      if (this.typeFilter === "active") {
+        return this.todoItem.filter(item => (
+          !item.isCompleted
+        ))
+      }
+      if (this.typeFilter === "completed") {
+        return this.todoItem.filter(item => (
+          item.isCompleted
+        ))
+      }
     }
   }
 }
