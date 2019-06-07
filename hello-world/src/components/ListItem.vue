@@ -23,7 +23,6 @@ export default {
       let tmp = this.todoItem
       tmp.splice(index, 1)
       this.$emit("update:todoItem", tmp)
-      Vue.set()
     },
     changeStatus: function(index) {
       let tmp = this.todoItem
